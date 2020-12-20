@@ -1,57 +1,40 @@
 function openPage() {
-  // browser.tabs.create({
-  //   url: "https://developer.mozilla.org"
-  // });
-  // //*** This download based on image URL
-  // // browser.downloads.download(
-  // //   {
-  // //     url : "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1280px-Image_created_with_a_mobile_phone.png",
-  // //     filename : "cat.png",
-  // //     conflictAction : 'uniquify'
-  // //   }
-  // // );
-  //
-  // console.log("cat");
-  // let querying = browser.tabs.query({});
-  // querying.then((objects) => {
-  //   console.log("done");
-  //   for (const object of objects){
-  //     console.log(object.id);
-  //   }
-  // });
-  //
-  // const gay = 'document.body.style.border = "5px solid green"';
-  // console.log("dog");
-  // console.log(gay);
-  //
-  //
-  // var mama = browser.tabs.executeScript(1,{
-  //   code: gay
-  // });
+  // Creating an array to store all the tab ids
+  let idArray = [];
+  //handler functions for executeScript
   function onExecuted(result) {
-    console.log(`We made it green`);
   }
-
   function onError(error) {
     console.log(`Error: ${error}`);
   }
-
-  const makeItGreen = 'document.body.style.border = "5px solid green"';
-
-  console.log("cat");
-  const executing = browser.tabs.executeScript(1,{
-    file: "cscript.js",
-    allFrames: true
+  // Put all the tab ids into the array
+  let querying = browser.tabs.query({url: "*://gelbooru.com/*"});
+  querying.then((objects) => {
+    for (const object of objects){
+      idArray.push(object.id);
+    }
+  // Run the same content script to get the URL of image
+  // and send the URL back to the background script
+    for(let id of idArray){
+      console.log("working on tab id " + id);
+      const executing = browser.tabs.executeScript(id,{
+        file: "cscript.js",
+        allFrames: true
+      });
+      executing.then(onExecuted, onError);
+    }
   });
-
-  executing.then(onExecuted, onError);
-
 }
 
-
-function handler(mess){
-  console.log(mess);
+// trigger download of the url sent back from contentscript
+async function downloadTheReturnedUrl(mess){
+  let downloadCompleted = browser.downloads.download(
+    {
+      url : mess
+    }
+  );
+  await downloadCompleted;
 }
 
+browser.runtime.onMessage.addListener(downloadTheReturnedUrl);
 browser.browserAction.onClicked.addListener(openPage);
-browser.runtime.onMessage.addListener(handler);

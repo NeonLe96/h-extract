@@ -9,7 +9,7 @@
   },
 
   "permissions":[
-    "tabs","activeTab","downloads","*://developer.mozilla.org/*"
+    "tabs","downloads","*://gelbooru.com/*"
   ],
 
   "browser_action":{
