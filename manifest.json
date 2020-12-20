@@ -4,13 +4,12 @@
   "description": "Build an Extension!",
   "manifest_version": 2,
 
-
   "background": {
     "scripts": ["b.js"]
   },
 
   "permissions":[
-    "tabs","activeTab","downloads"
+    "tabs","activeTab","downloads","*://developer.mozilla.org/*"
   ],
 
   "browser_action":{
