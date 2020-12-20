@@ -18,7 +18,7 @@ function openPage() {
     for(let id of idArray){
       console.log("working on tab id " + id);
       const executing = browser.tabs.executeScript(id,{
-        file: "cscript.js",
+        file: "content_script.js",
         allFrames: true
       });
       executing.then(onExecuted, onError);
