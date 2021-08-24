@@ -1,5 +1,6 @@
 # h-extract
-> Firefox Extension to download all open Gel tabs images.
+> Firefox Extension to download all currently open Gel tabs images.
+> 
 
 ## Development setup
 
@@ -9,8 +10,3 @@ Firefox Extension
 ## Release History
 
 * 1.0.0 
-
-## Meta
-
-Neon
-Dec 20 2020
